@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using rock_paper_scissors.model;
 
 namespace rock_paper_scissors
 {
@@ -15,7 +14,7 @@ namespace rock_paper_scissors
 
         static void rps_game_winner(string[][] torneio, int i, int j)
         {
-            if (j + 2 < 8)
+            if (j + 2 < torneio[i].Length)
             {
                 if (torneio[i][j].ToString().Equals("S") && torneio[i][j + 2].ToString().Equals("P") ||
                 torneio[i][j].ToString().Equals("R") && torneio[i][j + 2].ToString().Equals("S") ||
@@ -27,13 +26,14 @@ namespace rock_paper_scissors
         }
 
         static void rps_tournament_winner(string[][] torneio, int i, int j)
-        {
-            rps_game_winner(torneio, i, j);
-            if (i + 1 < 2)
+        {   
+            Console.WriteLine(torneio.Length.ToString());
+             Console.WriteLine(torneio[i].Length.ToString());
+            rps_game_winner(torneio, i, j);  
+            if (i + 1 < torneio.Length)
             {                
-                rps_tournament_winner(torneio, i + 1, j);
-                Console.WriteLine("Vencedor do torneio: " + torneio[i][j - 1].ToString());
-            }
+                rps_tournament_winner(torneio, i + 1, j);                                              
+            }                              
         }
 
     }
