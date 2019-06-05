@@ -9,8 +9,8 @@ namespace rock_paper_scissors
         {
             string estrategia, nome_jogador;
             int qtde_jogadores, qtde_toneios;
-            //string[][] torneio = new string[2][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" } };
-            string[][] torneio;
+            string[][] torneio = new string[2][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" } };
+            /*string[][] torneio;
 
             do
             {
@@ -31,7 +31,7 @@ namespace rock_paper_scissors
             } while (qtde_jogadores < 2);
 
             //DEFINE O TAMANHO DO ARRAY PELA QUANTIDADE DE TORNEIOS
-            torneio = new string[qtde_toneios][];            
+            torneio = new string[qtde_toneios][];
             for (int i = 0; i < qtde_toneios; i++)
             {
 
@@ -44,7 +44,7 @@ namespace rock_paper_scissors
 
                     do
                     {
-                        Console.WriteLine("Digite a estratégia do jogador [{0}]: ",j);
+                        Console.WriteLine("Digite a estratégia do jogador [{0}]: ", j);
                         estrategia = Console.ReadLine();
                         estrategia = estrategia.ToUpper();
 
@@ -52,40 +52,142 @@ namespace rock_paper_scissors
                             Console.WriteLine("NoSuchStrategyError");
                         else
                         {
-                            jogadores[j] = nome_jogador;                            
+                            jogadores[j] = nome_jogador;
                             jogadores[++j] = estrategia;
                         }
                     } while (!estrategia.Equals("S") && !estrategia.Equals("R") && !estrategia.Equals("P"));
                 }
 
                 torneio[i] = jogadores;
-            }
+            }*/
 
-            rps_tournament_winner(torneio, 0, 1);
+            //rps_tournament_winner(torneio, 0, 1);
+            rps_tournament_winner(torneio);
         }
 
-        static void rps_game_winner(string[][] torneio, int i, int j)
+        /*static void rps_game_winner(string[][] torneio, int i, int j)
         {
             if (j + 2 < torneio[i].Length)
             {
                 if (torneio[i][j].ToString().Equals("S") && torneio[i][j + 2].ToString().Equals("P") ||
                 torneio[i][j].ToString().Equals("R") && torneio[i][j + 2].ToString().Equals("S") ||
-                torneio[i][j].ToString().Equals("P") && torneio[i][j + 2].ToString().Equals("R"))
-                    Console.WriteLine("Vencedor do Jogo: " + torneio[i][j - 1].ToString());
+                torneio[i][j].ToString().Equals("P") && torneio[i][j + 2].ToString().Equals("R") ||
+                torneio[i][j].ToString().Equals("S") && torneio[i][j + 2].ToString().Equals("S") ||
+                torneio[i][j].ToString().Equals("R") && torneio[i][j + 2].ToString().Equals("R") ||
+                torneio[i][j].ToString().Equals("P") && torneio[i][j + 2].ToString().Equals("P"))
+                {
+                    rps_game_winner(torneio, i, j);
+                    Console.WriteLine("Vencedor do Jogo: " + torneio[i][j - 1].ToString());                    
+                }
                 else
+                {
+                    Console.WriteLine("Vai empilhar: " + (j + 2).ToString());
                     rps_game_winner(torneio, i, j + 2);
+                }
             }
-        }
+            Console.WriteLine("Vai desempempilhar: " + j.ToString());
+        }*/
 
-        static void rps_tournament_winner(string[][] torneio, int i, int j)
+
+
+        /* static void rps_tournament_winner(string[][] torneio, int i, int j)
         {
             rps_game_winner(torneio, i, j);
             if (i + 1 < torneio.Length)
             {
                 rps_tournament_winner(torneio, i + 1, j);
             }
+        }*/
+
+        static void rps_tournament_winner(string[][] torneio)
+        {
+            int[] vetPosVencedor = new int[torneio.Length];
+            int[] vetAuxPosVencedor = new int[torneio.Length];
+            for (int i = 0; i < torneio.Length; i++)
+            {
+                int vencedorTorneio = rps_game_winner(torneio, i);
+                vetPosVencedor[i] = vencedorTorneio;
+                Console.WriteLine("Vencedor da Rodada: " + torneio[i][vencedorTorneio - 1].ToString());
+            }
+
+            int posIAux = 0;
+            while (vetPosVencedor[1] != 0)
+            {
+                int pos = 0;
+                for (int j = 0; j < vetPosVencedor.Length; j = j + 2)
+                {
+                    if (vetPosVencedor[j + 1] != 0)
+                        vetAuxPosVencedor[pos++] = ganhadorRodada(torneio, j, j + 1, vetPosVencedor[j], vetPosVencedor[j + 1]);
+                    if (vetPosVencedor[j] == vetAuxPosVencedor[pos - 1])
+                        posIAux = j;
+                    else
+                        posIAux = j + 1;
+                }
+                vetAuxPosVencedor.CopyTo(vetPosVencedor, 0);
+            }
+
+            Console.WriteLine("Vencedor do Torneio: " + torneio[posIAux][vetPosVencedor[0] - 1].ToString());
         }
 
+        static int rps_game_winner(string[][] torneio, int i)
+        {
+            int[] vetGanhadores = new int[(torneio[i].Length - 4) / 2];
+            int[] vetGanAux = new int[vetGanhadores.Length];
+            int pos = 0;
+
+            for (int j = 1; j + 2 < torneio[i].Length; j = j + 4)
+            {
+                vetGanhadores[pos++] = ganhadorRodada(torneio, i, j, j + 2);
+            }
+
+
+            while (vetGanhadores[1] != 0)
+            {
+                pos = 0;
+                for (int j = 0; j < vetGanhadores.Length; j = j + 2)
+                {
+                    if (vetGanhadores[j + 1] != 0)
+                        vetGanAux[pos++] = ganhadorRodada(torneio, i, vetGanhadores[j], vetGanhadores[j + 1]);
+                }
+                vetGanAux.CopyTo(vetGanhadores, 0);
+            }
+
+            return vetGanAux[0];
+        }
+
+        static int ganhadorRodada(string[][] torneio, int i, int posUm, int posDois)
+        {
+            if (torneio[i][posUm].ToString().Equals("S") && torneio[i][posDois].ToString().Equals("P") ||
+                torneio[i][posUm].ToString().Equals("R") && torneio[i][posDois].ToString().Equals("S") ||
+                torneio[i][posUm].ToString().Equals("P") && torneio[i][posDois].ToString().Equals("R") ||
+                torneio[i][posUm].ToString().Equals("S") && torneio[i][posDois].ToString().Equals("S") ||
+                torneio[i][posUm].ToString().Equals("R") && torneio[i][posDois].ToString().Equals("R") ||
+                torneio[i][posUm].ToString().Equals("P") && torneio[i][posDois].ToString().Equals("P"))
+            {
+                return posUm;
+            }
+            else
+            {
+                return posDois;
+            }
+        }
+
+        static int ganhadorRodada(string[][] torneio, int indiceUm, int indiceDois, int posUm, int posDois)
+        {
+            if (torneio[indiceUm][posUm].ToString().Equals("S") && torneio[indiceDois][posDois].ToString().Equals("P") ||
+                torneio[indiceUm][posUm].ToString().Equals("R") && torneio[indiceDois][posDois].ToString().Equals("S") ||
+                torneio[indiceUm][posUm].ToString().Equals("P") && torneio[indiceDois][posDois].ToString().Equals("R") ||
+                torneio[indiceUm][posUm].ToString().Equals("S") && torneio[indiceDois][posDois].ToString().Equals("S") ||
+                torneio[indiceUm][posUm].ToString().Equals("R") && torneio[indiceDois][posDois].ToString().Equals("R") ||
+                torneio[indiceUm][posUm].ToString().Equals("P") && torneio[indiceDois][posDois].ToString().Equals("P"))
+            {
+                return posUm;
+            }
+            else
+            {
+                return posDois;
+            }
+        }
     }
 }
 
