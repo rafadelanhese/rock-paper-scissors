@@ -9,7 +9,7 @@ namespace rock_paper_scissors
         {
             string estrategia, nome_jogador;
             int qtde_jogadores, qtde_toneios;
-            string[][] torneio = new string[2][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" } };
+            string[][] torneio = new string[3][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" }, new string[] { "Teste 1", "S", "Teste 2", "P", "Teste 1", "S", "Teste 2", "P" } };
             /*string[][] torneio;
 
             do
@@ -107,26 +107,29 @@ namespace rock_paper_scissors
             {
                 int vencedorTorneio = rps_game_winner(torneio, i);
                 vetPosVencedor[i] = vencedorTorneio;
-                Console.WriteLine("Vencedor da Rodada: " + torneio[i][vencedorTorneio - 1].ToString());
+                Console.WriteLine("Vencedor do Rodada: [{0} , {1}]",torneio[i][vencedorTorneio - 1].ToString(), torneio[i][vencedorTorneio].ToString());
             }
 
             int posIAux = 0;
             while (vetPosVencedor[1] != 0)
             {
                 int pos = 0;
-                for (int j = 0; j < vetPosVencedor.Length; j = j + 2)
+                for (int j = 0; j + 1 < vetPosVencedor.Length; j = j + 2)
                 {
                     if (vetPosVencedor[j + 1] != 0)
+                    {
                         vetAuxPosVencedor[pos++] = ganhadorRodada(torneio, j, j + 1, vetPosVencedor[j], vetPosVencedor[j + 1]);
-                    if (vetPosVencedor[j] == vetAuxPosVencedor[pos - 1])
-                        posIAux = j;
-                    else
-                        posIAux = j + 1;
+                        if (vetPosVencedor[j] == vetAuxPosVencedor[pos - 1])
+                            posIAux = j;
+                        else
+                            posIAux = j + 1;
+                    }
+
                 }
                 vetAuxPosVencedor.CopyTo(vetPosVencedor, 0);
             }
 
-            Console.WriteLine("Vencedor do Torneio: " + torneio[posIAux][vetPosVencedor[0] - 1].ToString());
+            Console.WriteLine("Vencedor do Torneio: [{0} , {1}]", torneio[posIAux][vetPosVencedor[0] - 1].ToString(), torneio[posIAux][vetPosVencedor[0]].ToString());
         }
 
         static int rps_game_winner(string[][] torneio, int i)
@@ -144,7 +147,7 @@ namespace rock_paper_scissors
             while (vetGanhadores[1] != 0)
             {
                 pos = 0;
-                for (int j = 0; j < vetGanhadores.Length; j = j + 2)
+                for (int j = 0; j + 1 < vetGanhadores.Length; j = j + 2)
                 {
                     if (vetGanhadores[j + 1] != 0)
                         vetGanAux[pos++] = ganhadorRodada(torneio, i, vetGanhadores[j], vetGanhadores[j + 1]);
@@ -152,7 +155,7 @@ namespace rock_paper_scissors
                 vetGanAux.CopyTo(vetGanhadores, 0);
             }
 
-            return vetGanAux[0];
+            return vetGanAux[0] != 0 ? vetGanAux[0] : vetGanhadores[0];
         }
 
         static int ganhadorRodada(string[][] torneio, int i, int posUm, int posDois)
