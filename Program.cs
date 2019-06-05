@@ -9,7 +9,7 @@ namespace rock_paper_scissors
         {
             string estrategia, nome_jogador;
             int qtde_jogadores, qtde_toneios;
-            string[][] torneio = new string[3][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" }, new string[] { "Teste 1", "S", "Teste 2", "P", "Teste 1", "S", "Teste 2", "P" } };
+            string[][] torneio = new string[1][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" } };
             /*string[][] torneio;
 
             do
@@ -60,23 +60,26 @@ namespace rock_paper_scissors
 
                 torneio[i] = jogadores;
             }*/
-         
+
             rps_tournament_winner(torneio);
-        }              
+        }
 
         static void rps_tournament_winner(string[][] torneio)
         {
             int[] vetPosVencedor = new int[torneio.Length];
             int[] vetAuxPosVencedor = new int[torneio.Length];
+            int posIAux = 0;
+
             for (int i = 0; i < torneio.Length; i++)
             {
                 int vencedorTorneio = rps_game_winner(torneio, i);
                 vetPosVencedor[i] = vencedorTorneio;
-                Console.WriteLine("Vencedor do Rodada: [{0} , {1}]",torneio[i][vencedorTorneio - 1].ToString(), torneio[i][vencedorTorneio].ToString());
+                Console.WriteLine("Vencedor do Rodada: [{0} , {1}]", torneio[i][vencedorTorneio - 1].ToString(), torneio[i][vencedorTorneio].ToString());
             }
 
-            int posIAux = 0;
-            while (vetPosVencedor[1] != 0)
+            Console.WriteLine(" Tam: " + vetPosVencedor.Length.ToString());
+
+            while (vetPosVencedor.Length - 1 > 0 && vetPosVencedor[1] != 0)
             {
                 int pos = 0;
                 for (int j = 0; j + 1 < vetPosVencedor.Length; j = j + 2)
@@ -122,7 +125,7 @@ namespace rock_paper_scissors
 
             return vetGanAux[0] != 0 ? vetGanAux[0] : vetGanhadores[0];
         }
-        
+
         static int ganhadorRodada(string[][] torneio, int indiceUm, int indiceDois, int posUm, int posDois)
         {
             if (torneio[indiceUm][posUm].ToString().Equals("S") && torneio[indiceDois][posDois].ToString().Equals("P") ||
