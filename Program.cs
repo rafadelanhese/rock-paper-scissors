@@ -75,7 +75,7 @@ namespace rock_paper_scissors
                 int vencedorTorneio = rps_game_winner(torneio, i);
                 vetPosVencedor[i] = vencedorTorneio;
                 Console.WriteLine("Vencedor do Rodada: [{0} , {1}]", torneio[i][vencedorTorneio - 1].ToString(), torneio[i][vencedorTorneio].ToString());
-            }         
+            }
 
             while (vetPosVencedor.Length - 1 > 0 && vetPosVencedor[1] != 0)
             {
@@ -124,6 +124,10 @@ namespace rock_paper_scissors
             return vetGanAux[0] != 0 ? vetGanAux[0] : vetGanhadores[0];
         }
 
+        /*
+        Método que verifica o ganhador de uma rodada a partir do índice e posição na matriz.
+        Utilizado dois índices no parâmetro para evitar a sobrecarga do método.
+         */
         static int ganhadorRodada(string[][] torneio, int indiceUm, int indiceDois, int posUm, int posDois)
         {
             if (torneio[indiceUm][posUm].ToString().Equals("S") && torneio[indiceDois][posDois].ToString().Equals("P") ||
