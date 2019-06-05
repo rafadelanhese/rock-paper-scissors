@@ -9,8 +9,8 @@ namespace rock_paper_scissors
         {
             string estrategia, nome_jogador;
             int qtde_jogadores, qtde_toneios;
-            string[][] torneio = new string[1][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" } };
-            /*string[][] torneio;
+            //string[][] torneio = new string[2][] { new string[] { "Armando", "P", "Dave", "S", "Richard", "R", "Michael", "S" }, new string[] { "Allen", "S", "Omer", "P", "David E.", "R", "Richard X.", "P" } };
+            string[][] torneio;
 
             do
             {
@@ -59,7 +59,7 @@ namespace rock_paper_scissors
                 }
 
                 torneio[i] = jogadores;
-            }*/
+            }
 
             rps_tournament_winner(torneio);
         }
@@ -75,9 +75,7 @@ namespace rock_paper_scissors
                 int vencedorTorneio = rps_game_winner(torneio, i);
                 vetPosVencedor[i] = vencedorTorneio;
                 Console.WriteLine("Vencedor do Rodada: [{0} , {1}]", torneio[i][vencedorTorneio - 1].ToString(), torneio[i][vencedorTorneio].ToString());
-            }
-
-            Console.WriteLine(" Tam: " + vetPosVencedor.Length.ToString());
+            }         
 
             while (vetPosVencedor.Length - 1 > 0 && vetPosVencedor[1] != 0)
             {
